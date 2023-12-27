@@ -1,0 +1,25 @@
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# Build output
+build/
+bin/
+
+# OSX directory info
+.DS_Store
+
+# IntelliJ
+.idea/
+*.iml
+
+# Eclipse
+.classpath
+.project
+.settings/
+.factorypath
+
+# Gradle
+.gradle/
