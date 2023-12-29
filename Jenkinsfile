@@ -14,12 +14,13 @@ pipeline {
         stage('test') {
             steps {
                 sh './gradlew test'
+
+                publishHTML target: [
+                    reportDir: 'build/reports/tests/test',
+                    reportFiles: 'index.html',
+                    reportName: 'HTML Report'
+                ]
             }
-            publishHTML target: [
-                reportDir: 'build/reports/tests/test',
-                reportFiles: 'index.html',
-                reportName: 'HTML Report'
-            ]
         }
     }
 }
