@@ -3,6 +3,7 @@ pipeline {
     stages {
         stage('checkout') {
             steps {
+                sh 'rm -r mooc-markov-text-editor'
                 sh 'git clone https://github.com/evan-qin-xu/mooc-markov-text-editor.git'
             }
         }
