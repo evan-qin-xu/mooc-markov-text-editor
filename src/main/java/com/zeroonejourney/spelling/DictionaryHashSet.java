@@ -11,7 +11,7 @@ import java.util.HashSet;
 public class DictionaryHashSet implements Dictionary 
 {
 
-    private HashSet<String> words;
+    private final HashSet<String> words;
 	
 	public DictionaryHashSet()
 	{

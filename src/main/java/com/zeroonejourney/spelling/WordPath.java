@@ -15,5 +15,5 @@ public interface WordPath {
    * @param word2 The second word
    * @return list of Strings which are the path from word1 to word2 including word1 and word2
    */
-  public List<String> findPath(String word1, String word2);
+  List<String> findPath(String word1, String word2);
 }

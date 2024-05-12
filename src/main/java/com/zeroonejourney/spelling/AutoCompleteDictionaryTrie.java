@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class AutoCompleteDictionaryTrie implements Dictionary, AutoComplete {
 
-  private TrieNode root;
+  private final TrieNode root;
   private int size;
 
   public AutoCompleteDictionaryTrie() {

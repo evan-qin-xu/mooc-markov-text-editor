@@ -88,13 +88,8 @@ public class TextProController {
 
 		// ADD LISTENERS FOR ADJUSTING ON RESIZE
 		container.widthProperty().addListener(li -> {
-			
-			if((container.getWidth() - leftPane.getPrefWidth()) < BUTTON_WIDTH) {
-				rightBox.setVisible(false);
-			}
-			else {
-				rightBox.setVisible(true);
-			}
+
+            rightBox.setVisible(!((container.getWidth() - leftPane.getPrefWidth()) < BUTTON_WIDTH));
 		});
 		
 		// function for setting spacing of rightBox
@@ -220,22 +215,12 @@ public class TextProController {
 
 	@FXML
 	private void handleAutoComplete() {
-		if(autocompleteBox.isSelected()) {
-			textBox.setAutoComplete(true);
-		}
-		else {
-			textBox.setAutoComplete(false);
-		}
+        textBox.setAutoComplete(autocompleteBox.isSelected());
 	}
 	
 	@FXML
 	private void handleSpelling() {
-		if(spellingBox.isSelected()) {
-			textBox.setSpelling(true);
-		}
-		else {
-			textBox.setSpelling(false);
-		}
+        textBox.setSpelling(spellingBox.isSelected());
 	}
 	
 	@FXML

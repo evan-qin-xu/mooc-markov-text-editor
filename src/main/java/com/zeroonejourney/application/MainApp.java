@@ -47,8 +47,6 @@ public class MainApp extends Application {
             primaryStage.setMinHeight(430);
             primaryStage.setMinWidth(334);
             primaryStage.show();
-            
-          
 		} catch(Exception e) {
 			LOGGER.severe(e::getMessage);
 		}
@@ -195,7 +193,6 @@ public class MainApp extends Application {
 	    	if(text.getLayoutBounds().getWidth() > 200) {
 		    	alert.getDialogPane().setPrefWidth(text.getLayoutBounds().getWidth()+100);
 	    	}
-	    	
     	}
     	// no path found
     	else {

@@ -4,7 +4,7 @@ import java.io.PrintWriter;
 import java.util.List;
 
 public class NearbyWordsGraderTwo {
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         int tests = 0;
         int incorrect = 0;
         String feedback = "";
@@ -24,7 +24,7 @@ public class NearbyWordsGraderTwo {
 
             feedback += "** Test 1: 2 suggestions... ";
             List<String> d1 = nw.suggestions("dag", 4);
-            feedback += "" + d1.size() + " suggestions returned.\n";
+            feedback += d1.size() + " suggestions returned.\n";
 
             feedback += "** Test 2: Checking suggestion correctness... ";
             feedback += "Suggestions: ";
@@ -34,7 +34,7 @@ public class NearbyWordsGraderTwo {
 
             feedback += "\n** Test 3: 3 suggestions... ";
             d1 = nw.suggestions("fare", 3);
-            feedback += "" + d1.size() + " suggestions returned.\n";
+            feedback += d1.size() + " suggestions returned.\n";
 
             feedback += "** Test 4: Checking suggestion correctness... ";
             feedback += "Suggestions: ";

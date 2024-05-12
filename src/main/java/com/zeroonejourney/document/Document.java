@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 
 public abstract class Document {
 
-	private String text;
+	private final String text;
 
 	/**
 	 * Create a new org.evanxu.document from the given text. Because this class is abstract,
@@ -66,7 +66,7 @@ public abstract class Document {
 	 *         should consider y a vowel.
 	 */
 	protected int countSyllables(String word) {
-		Set<Character> vowels = new HashSet<Character>(Arrays.asList(new Character[] { 'a', 'e', 'i', 'o', 'u', 'y' }));
+		Set<Character> vowels = new HashSet<Character>(Arrays.asList('a', 'e', 'i', 'o', 'u', 'y'));
 		boolean isPreviousLetterVowel = false;
 		int numVowels = 0;
 		word = word.toLowerCase();
