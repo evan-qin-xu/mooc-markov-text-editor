@@ -11,17 +11,24 @@ import java.util.Random;
  */
 public class MarkovTextGeneratorLoL implements MarkovTextGenerator {
 
+  /** Space. */
   public static final String SPACE = " ";
-  // The list of words with their next words
-  private List<ListNode> wordList;
-  // The random number generator
+
+  /** Empty string. */
+  public static final String EMPTY_STRING = "";
+
+  /** The random number generator. */
   private final Random rnGenerator;
-  // The starting "word"
+
+  /** The list of words with their next words. */
+  private List<ListNode> wordList;
+
+  /** The starting "word". */
   private String starter;
 
   public MarkovTextGeneratorLoL(Random generator) {
-    wordList = new LinkedList<ListNode>();
-    starter = "";
+    wordList = new LinkedList<>();
+    starter = EMPTY_STRING;
     rnGenerator = generator;
   }
 
@@ -34,7 +41,8 @@ public class MarkovTextGeneratorLoL implements MarkovTextGenerator {
   public static void main(String[] args) {
     // feed the generator a fixed random value for repeatable behavior
     MarkovTextGeneratorLoL gen = new MarkovTextGeneratorLoL(new Random(42));
-    String textString = "Hello.  Hello there.  This is a test.  Hello there.  Hello Bob.  Test again.";
+    String textString =
+        "Hello.  Hello there.  This is a test.  Hello there.  Hello Bob.  Test again.";
     System.out.println(textString);
     gen.train(textString);
     System.out.println(gen);
@@ -80,12 +88,13 @@ public class MarkovTextGeneratorLoL implements MarkovTextGenerator {
     return wordList;
   }
 
-  /**
-   * Train the generator by adding the sourceText.
-   */
+  /** Train the generator by adding the sourceText. */
   @Override
   public void train(String sourceText) {
-    String[] words = sourceText.split(" ");
+    if (sourceText.trim().isEmpty()) {
+      return;
+    }
+    String[] words = sourceText.split(MarkovTextGeneratorLoL.SPACE);
     starter = words[0];
     String prevWord = starter;
     wordList.add(new ListNode(starter));
@@ -113,22 +122,20 @@ public class MarkovTextGeneratorLoL implements MarkovTextGenerator {
     }
   }
 
-  /**
-   * Generate the number of words requested.
-   */
+  /** Generate the number of words requested. */
   @Override
   public String generateText(int numWords) {
     String currWord = starter;
-    String output = "";
-    output = currWord + SPACE;
+    String output = EMPTY_STRING;
     int count = 0;
-    while(count < numWords) {
+    while (count < numWords) {
+      count++;
       for (ListNode wl : wordList) {
         if (wl.getWord().equals(currWord)) {
           String w = wl.getRandomNextWord(rnGenerator);
-          output += w + " ";
+          output += w + SPACE;
           currWord = w;
-          count++;
+          break;
         }
       }
     }
@@ -137,60 +144,18 @@ public class MarkovTextGeneratorLoL implements MarkovTextGenerator {
 
   @Override
   public String toString() {
-    String toReturn = "";
+    String toReturn = EMPTY_STRING;
     for (ListNode n : wordList) {
       toReturn += n.toString();
     }
     return toReturn;
   }
 
-  /**
-   * Retrain the generator from scratch on the source text.
-   */
+  /** Retrain the generator from scratch on the source text. */
   @Override
   public void retrain(String sourceText) {
     wordList = new LinkedList<>();
-    starter = "";
+    starter = EMPTY_STRING;
     train(sourceText);
-  }
-}
-
-/**
- * Links a word to the next words in the list You should use this class in your implementation.
- */
-class ListNode {
-  // The word that is linking to the next words
-  private final String word;
-  // The next words that could follow it
-  private final List<String> nextWords;
-
-  ListNode(String word) {
-    this.word = word;
-    nextWords = new LinkedList<String>();
-  }
-
-  public List<String> getNextWords() {
-    return nextWords;
-  }
-
-  public String getWord() {
-    return word;
-  }
-
-  public void addNextWord(String nextWord) {
-    nextWords.add(nextWord);
-  }
-
-  public String getRandomNextWord(Random generator) {
-    return nextWords.get(generator.nextInt(nextWords.size()));
-  }
-
-  public String toString() {
-    String toReturn = word + ": ";
-    for (String s : nextWords) {
-      toReturn += s + "->";
-    }
-    toReturn += "\n";
-    return toReturn;
   }
 }

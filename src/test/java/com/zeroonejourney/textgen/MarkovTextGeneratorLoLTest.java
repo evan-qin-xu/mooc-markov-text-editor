@@ -13,7 +13,6 @@ public class MarkovTextGeneratorLoLTest {
   @Before
   public void setUp() throws Exception {
     String textString = "hi there hi Leo";
-    System.out.println(textString);
     generator.train(textString);
   }
 
@@ -27,5 +26,9 @@ public class MarkovTextGeneratorLoLTest {
     assertEquals("hi", wordList.get(1).getNextWords().get(0));
     assertEquals("Leo", wordList.get(2).getWord());
     assertEquals("hi", wordList.get(2).getNextWords().get(0));
+    assertEquals(0, generator.generateText(0).length());
+    String input = "I love cats. I hate dogs. I I I I I I I I I I I I I I I I love cats. I I I I I I I I I I I I I I I I hate dogs. I I I I I I I I I like books. I love love. I am a text generator. I love cats. I love cats. I love cats. I love love love socks.";
+    generator.retrain(input);
+    assertEquals(500, generator.generateText(500).split(" ").length);
   }
 }
