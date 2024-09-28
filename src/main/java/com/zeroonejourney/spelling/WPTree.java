@@ -2,8 +2,7 @@
 package com.zeroonejourney.spelling;
 
 // import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * WPTree implements WordPath by dynamically creating a tree of words during a Breadth First Search
@@ -12,32 +11,62 @@ import java.util.List;
  * @author UC San Diego Intermediate MOOC team
  */
 public class WPTree implements WordPath {
+  private static final int THRESHOLD = 10000;
 
   // this is the root node of the WPTree
-  private final WPTreeNode root;
+  private WPTreeNode root;
   // used to search for nearby Words
   private NearbyWords nw;
+
+  Dictionary d;
+
+  private void initWPTree() {
+    this.root = null;
+    d = new DictionaryHashSet();
+    DictionaryLoader.loadDictionary(d, "data/dict.txt");
+  }
 
   // This constructor is used by the Text Editor Application
   // You'll need to create your own NearbyWords object here.
   public WPTree() {
-    this.root = null;
-    // TODO initialize a NearbyWords object
-    // Dictionary d = new DictionaryHashSet();
-    // DictionaryLoader.loadDictionary(d, "data/dict.txt");
-    // this.nw = new NearbyWords(d);
+    initWPTree();
+    this.nw = new NearbyWords(d);
   }
 
   // This constructor will be used by the grader code
   public WPTree(NearbyWords nw) {
-    this.root = null;
+    initWPTree();
     this.nw = nw;
   }
 
   // see method description in WordPath interface
   public List<String> findPath(String word1, String word2) {
-    // TODO: Implement this method.
-    return new LinkedList<String>();
+    if (!d.isWord(word2)) {
+      return null;
+    }
+    Queue<WPTreeNode> nodes = new LinkedList<>();
+    Set<String> visited = new HashSet<>();
+    root = new WPTreeNode(word1, null);
+    visited.add(word1);
+    nodes.offer(root);
+    int distanceCount = 0;
+    while (!nodes.isEmpty() && !visited.contains(word2) && distanceCount < THRESHOLD) {
+      WPTreeNode curr = nodes.poll();
+      List<String> neighbours = nw.distanceOne(curr.getWord(), true);
+      distanceCount++;
+      for (String n : neighbours) {
+        if (!visited.contains(n)) {
+          curr.addChild(n);
+          visited.add(n);
+          WPTreeNode child = new WPTreeNode(n, curr);
+          nodes.add(child);
+          if (n.equals(word2)) {
+            return child.buildPathToRoot();
+          }
+        }
+      }
+    }
+    return null;
   }
 
   // Method to print a list of WPTreeNodes (useful for debugging)
@@ -50,22 +79,25 @@ public class WPTree implements WordPath {
     ret += "]";
     return ret;
   }
+
 }
 
-/* Tree Node in a WordPath Tree. This is a standard tree with each
- * node having any number of possible children.  Each node should only
- * contain a word in the dictionary and the relationship between nodes is
- * that a child is one character mutation (deletion, insertion, or
- * substitution) away from its parent
+/*
+ * Tree Node in a WordPath Tree. This is a standard tree with each node having
+ * any number of possible children. Each node should only contain a word in the
+ * dictionary and the relationship between nodes is that a child is one
+ * character mutation (deletion, insertion, or substitution) away from its
+ * parent
  */
 class WPTreeNode {
 
-  private final String word;
-  private final List<WPTreeNode> children;
-  private final WPTreeNode parent;
+  private String word;
+  private List<WPTreeNode> children;
+  private WPTreeNode parent;
 
   /**
-   * Construct a node with the word w and the parent p (pass a null parent to construct the root)
+   * Construct a node with the word w and the parent p (pass a null parent to
+   * construct the root)
    *
    * @param w The new node's word
    * @param p The new node's parent
@@ -77,8 +109,8 @@ class WPTreeNode {
   }
 
   /**
-   * Add a child of a node containing the String s precondition: The word is not already a child of
-   * this node
+   * Add a child of a node containing the String s precondition: The word is not
+   * already a child of this node
    *
    * @param s The child node's word
    * @return The new WPTreeNode
@@ -90,7 +122,8 @@ class WPTreeNode {
   }
 
   /**
-   * Get the list of children of the calling object (pass a null parent to construct the root)
+   * Get the list of children of the calling object (pass a null parent to
+   * construct the root)
    *
    * @return List of WPTreeNode children
    */
@@ -101,7 +134,8 @@ class WPTreeNode {
   /**
    * Allows you to build a path from the root node to the calling object
    *
-   * @return The list of strings starting at the root and ending at the calling object
+   * @return The list of strings starting at the root and ending at the calling
+   *         object
    */
   public List<String> buildPathToRoot() {
     WPTreeNode curr = this;
@@ -141,4 +175,5 @@ class WPTreeNode {
     ret += (" ]\n");
     return ret;
   }
+
 }
