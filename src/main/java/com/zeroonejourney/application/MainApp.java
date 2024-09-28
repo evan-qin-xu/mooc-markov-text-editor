@@ -203,7 +203,7 @@ public class MainApp extends Application {
     	// set content and styling
     	alert.getDialogPane().setContent(box);
     	alert.getDialogPane().getStylesheets().add(
-    			   Objects.requireNonNull(getClass().getResource("com.zeroonejourney.application.css")).toExternalForm());
+    			   Objects.requireNonNull(getClass().getResource("/css/application.css")).toExternalForm());
     	alert.getDialogPane().getStyleClass().add("myDialog");
     	alert.showAndWait();
     }
